@@ -277,8 +277,27 @@ for img_path, caption in [
 story.append(Paragraph("（二）以测促创：两轮19题摸清AI能力边界，把缺陷变教材", styles['Heading2']))
 story.append(Paragraph("知识库一期建成后，团队并未直接交付，而是设计<b>两轮系统测试</b>把AI的“能与不能”摆上台面，让技术边界成为创新创业素养的教学点。", styles['Body']))
 story.append(Paragraph("<b>1. 首轮5题“抗诱导/防编造”测试（2026年10月25日）。</b>针对库外问题（如“天津市医保报销比”、虚构的“2026年农村集体免税新政”）与错误前提诱导（如“只要签合同就可不走采购流程”“合作社可随意处置集体土地所有权”），AI均能准确识别并拒绝编造，验证了检索忠实性。此结果增强了企业对AI辅助合规的信任，也为课堂提供了“AI不会胡说，但会漏、会飘”的理性预期。", styles['Body']))
+# 图3 抗诱导
+if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图4_抗诱导防编造测试.png"):
+    story.append(Spacer(1, 3*mm))
+    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图4_抗诱导防编造测试.png", width=135*mm, height=82*mm)
+    img.hAlign = 'CENTER'
+    story.append(img)
+    story.append(Paragraph("图3 &nbsp; 首轮抗诱导测试：库外问题“天津市城乡居民医保报销比例”被准确识别为无相关资料，AI未编造", styles['Caption']))
 story.append(Paragraph("<b>2. 第二轮14题深度测试（2026年10月28日）。</b>覆盖同题稳定性、引文溯源、跨文档召回、召回截断、多规则叠加、版本识别、多轮记忆等维度，暴露六类典型缺陷：向量召回随机漂移导致同题异答、引用角标无法跳转、长文被截断致要点遗漏、多版本混淆、小点被忽略、上下文脱节。同时诊断出平台硬限制：<b>单次最多返回约45条、无分页参数、体量大时必须手工打标</b>才能稳住召回。", styles['Body']))
-story.append(Paragraph("<b>3. 迭代验证：11.11对比。</b>同样的14题在精细打标后复测，问题显著收敛：同题稳定性“<b>未出现大幅跳动</b>”、引文“<b>可正常跳转并高亮原文段落</b>”、跨文档召回“<b>未出现无关或重复文件</b>”、计费题由错误变为“<b>指出误区并算对7&nbsp;142.4元</b>”、多规则叠加题“<b>不会现编不存在的32号文且更严谨</b>”。这一“测—改—再测”的过程本身，就是一堂生动的创新创业课：<b>创新不是追新工具，而是弄清约束、在约束内用规则与流程补位</b>。", styles['Body']))
+story.append(Paragraph("<b>3. 迭代验证：11.11对比。</b>同样的14题在精细打标后复测，问题显著收敛：同题稳定性“<b>未出现大幅跳动</b>”、引文“<b>可正常跳转并高亮原文段落</b>”、跨文档召回“<b>未出现无关或重复文件</b>”、计费题由错误变为“<b>指出误区并算对7&nbsp;142.4元</b>”、多规则叠加题“<b>不会现编不存在的32号文且更严谨</b>”（见图5）。这一“测—改—再测”的过程本身，就是一堂生动的创新创业课：<b>创新不是追新工具，而是弄清约束、在约束内用规则与流程补位</b>。", styles['Body']))
+if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图5_药品纳入医保精准检索.png"):
+    story.append(Spacer(1, 3*mm))
+    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图5_药品纳入医保精准检索.png", width=135*mm, height=85*mm)
+    img.hAlign = 'CENTER'
+    story.append(img)
+    story.append(Paragraph("图4 &nbsp; 单点细节检索：药品纳入医保条件——精准引用《国家药品目录》与中办发文，结构化作答", styles['Caption']))
+if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图6_三重保障叠加顺序.png"):
+    story.append(Spacer(1, 3*mm))
+    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图6_三重保障叠加顺序.png", width=135*mm, height=82*mm)
+    img.hAlign = 'CENTER'
+    story.append(img)
+    story.append(Paragraph("图5 &nbsp; 多规则叠加实测：贫困透析患者“县域结算→基本医保→大病保险→三重保障”四步叠加顺序被完整还原", styles['Caption']))
 
 # 表2
 story.append(Paragraph("表2 &nbsp; 两轮AI检索测试维度与改进（摘自“知识库测试问题11.11对比.xlsx”）", styles['Caption']))
@@ -328,6 +347,12 @@ te.setStyle(TableStyle([
     ('ROWBACKGROUNDS', (0,1), (-1,-1), [white, HexColor("#E2EFDA")]),
 ]))
 story.append(te)
+if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图3_三要素提问规范.png"):
+    story.append(Spacer(1, 3*mm))
+    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图3_三要素提问规范.png", width=120*mm, height=35*mm)
+    img.hAlign = 'CENTER'
+    story.append(img)
+    story.append(Paragraph("图6 &nbsp; 三要素提问法在企业中的落地示意：说清业务+层级+形态，命中率显著提升", styles['Caption']))
 story.append(Paragraph("配套产出《知识库使用规范手册》，明确“<b>文件名/文号/层级/业务</b>”四必带、查不到时“<b>加标签缩小范围或直开原文提问</b>”的二阶策略，解决一线“查不到、查不准”痛点。", styles['Body']))
 
 story.append(Paragraph("（三）真题进课堂：毕业设计与课程的双重活化", styles['Heading2']))
