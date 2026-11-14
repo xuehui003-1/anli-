@@ -231,7 +231,7 @@ story.append(Paragraph("基于此，学院于<b>2026年7月15日至8月25日</b>
 story.append(Paragraph("二、主要做法：AI为翼、真题为场，构建“学—做—创”一体模式", styles['Heading1']))
 story.append(Paragraph("案例形成“<b>教师下企业搭平台—AI能力边界当教材—学生接真题进企业</b>”的三段式路径，核心是将企业数字化转型中的真实任务完整搬进教学，使创新创业教育在<b>真需求、真标准、真验收</b>中发生（见图1）。", styles['Body']))
 
-img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/逻辑结构示意图.png", width=137*mm, height=47.19*mm)
+img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/逻辑结构示意图.png", width=137*mm, height=114.17*mm)
 img.hAlign = 'CENTER'
 story.append(KeepTogether([img, Paragraph("图1 &nbsp; 财税知识库驱动的协同育人逻辑结构示意图", styles['Caption'])]))
 
