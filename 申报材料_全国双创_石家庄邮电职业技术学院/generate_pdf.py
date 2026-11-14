@@ -345,9 +345,9 @@ story.append(Paragraph("表3 &nbsp; 三要素检索规范：业务领域+层级+
 elem_data = [
     [Paragraph("<b>要素</b>", styles['TableHeader']), Paragraph("<b>示例问法</b>", styles['TableHeader']), Paragraph("<b>检索价值</b>", styles['TableHeader'])],
     [Paragraph("业务领域", styles['TableCellCenter']), Paragraph("职工医保住院报销 / 政府采购评审专家", styles['TableCell']), Paragraph("锁定12领域与80+二级标签", styles['TableCell'])],
-    [Paragraph("层级", styles['TableCellCenter']), Paragraph("石家庄市 / 河北省 / 国家", styles['TableCell']), Paragraph("避免省市混用、省市链条断裂", styles['TableCell'])],
-    [Paragraph("文档形态", styles['TableCellCenter']), Paragraph("政策原文 / 价格表 / 问答汇编", styles['TableCell']), Paragraph("区分正文与目录表，提升命中率", styles['TableCell'])],
-    [Paragraph("完整示例", styles['TableCellCenter']), Paragraph("“石家庄市 职工医保住院 政策原文”", styles['TableCell']), Paragraph("三要素合一，命中率显著高于单关键词", styles['TableCell'])],
+    [Paragraph("层级", styles['TableCellCenter']), Paragraph("石家庄市 / 河北省 / 国家", styles['TableCell']), Paragraph("帮助区分政策适用层级", styles['TableCell'])],
+    [Paragraph("文档形态", styles['TableCellCenter']), Paragraph("政策原文 / 价格表 / 问答汇编", styles['TableCell']), Paragraph("便于区分正文与目录表", styles['TableCell'])],
+    [Paragraph("完整示例", styles['TableCellCenter']), Paragraph("“石家庄市 职工医保住院 政策原文”", styles['TableCell']), Paragraph("帮助限定检索范围，结果仍需核验", styles['TableCell'])],
 ]
 te = Table(elem_data, colWidths=[24*mm, 50*mm, 74*mm])
 te.setStyle(TableStyle([
@@ -362,12 +362,10 @@ te.setStyle(TableStyle([
     ('ROWBACKGROUNDS', (0,1), (-1,-1), [white, HexColor("#E2EFDA")]),
 ]))
 story.append(te)
-if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图3_三要素提问规范.png"):
-    story.append(Spacer(1, 3*mm))
-    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图3_三要素提问规范.png", width=120*mm, height=35*mm, kind="bound")
-    img.hAlign = 'CENTER'
-    story.append(img)
-    story.append(Paragraph("图9 &nbsp; 三要素提问法在企业中的落地示意：说清业务+层级+形态", styles['Caption']))
+story.append(Paragraph("例如，可将业务领域、政策层级和文档形态组合为具体问题，并在检索后对照原文、核实政策有效性与适用范围（见图9）。", styles['Body']))
+img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/三要素提问与核验示意图.png", width=137*mm, height=(137*1170/1800)*mm)
+img.hAlign = 'CENTER'
+story.append(KeepTogether([img, Paragraph("图9 &nbsp; 三要素提问法与检索核验示例", styles['Caption'])]))
 story.append(Paragraph("配套产出《知识库使用规范手册》，明确“<b>文件名/文号/层级/业务</b>”四必带、查不到时“<b>加标签缩小范围或直开原文提问</b>”的二阶策略，解决一线“查不到、查不准”痛点。", styles['Body']))
 
 story.append(Paragraph("（三）真题进课堂：毕业设计与课程的双重活化", styles['Heading2']))

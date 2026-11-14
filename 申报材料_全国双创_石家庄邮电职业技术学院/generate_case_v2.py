@@ -283,9 +283,9 @@ add_paragraph(doc, "表3  三要素检索规范：业务领域+层级+文档形�
 elem_table_data = [
     ["要素", "示例问法", "检索价值"],
     ["业务领域", "职工医保住院报销 / 政府采购评审专家", "锁定12领域与80+二级标签"],
-    ["层级", "石家庄市 / 河北省 / 国家", "避免省市混用、省市链条断裂"],
-    ["文档形态", "政策原文 / 价格表 / 问答汇编", "区分正文与目录表，提升命中率"],
-    ["完整示例", "“石家庄市 职工医保住院 政策原文”", "三要素合一，命中率显著高于单关键词"],
+    ["层级", "石家庄市 / 河北省 / 国家", "帮助区分政策适用层级"],
+    ["文档形态", "政策原文 / 价格表 / 问答汇编", "便于区分正文与目录表"],
+    ["完整示例", "“石家庄市 职工医保住院 政策原文”", "帮助限定检索范围，结果仍需核验"],
 ]
 elem_table = doc.add_table(rows=1, cols=3)
 elem_table.style = 'Table Grid'
@@ -300,8 +300,9 @@ for row in elem_table_data[1:]:
     for i, txt in enumerate(row):
         set_cell_text(cells[i], txt, font_size=8, bold=False, alignment=WD_ALIGN_PARAGRAPH.LEFT)
 set_table_borders(elem_table)
-# 三要素真图补充
-add_figure(doc, "申报材料_全国双创_石家庄邮电职业技术学院/配图/图3_三要素提问规范.png", "图9  三要素提问法在企业中的落地示意：说清业务+层级+形态", width_inches=5.0)
+# 根据原有提问方法重新绘制的示意图，不冒充系统截图。
+add_paragraph(doc, "例如，可将业务领域、政策层级和文档形态组合为具体问题，并在检索后对照原文、核实政策有效性与适用范围（见图9）。", font_size=16, line_spacing=28)
+add_figure(doc, "申报材料_全国双创_石家庄邮电职业技术学院/配图/三要素提问与核验示意图.png", "图9  三要素提问法与检索核验示例", width_inches=5.4)
 add_paragraph(doc, "配套产出《知识库使用规范手册》，明确“文件名/文号/层级/业务”四必带、查不到时“加标签缩小范围或直开原文提问”的二阶策略，解决一线“查不到、查不准”痛点。", font_size=16, line_spacing=28, first_line_indent=32)
 
 # （三）
