@@ -225,11 +225,15 @@ story.append(Spacer(1, 4*mm))
 story.append(Paragraph("一、背景与问题：从合规新规到教学痛点的真实牵引", styles['Heading1']))
 story.append(Paragraph("石家庄邮电职业技术学院会计学院开设大数据与会计、财务管理等专业，对口服务京津冀中小财税服务机构。这类机构轻资产、重政策，客户问的是“这个优惠还能不能用、那条红线能不能碰”，答复既要<b>快、准</b>，还要<b>追到原文条款</b>。2025年5月1日，《涉税专业服务管理办法（试行）》（<b>国家税务总局令第58号</b>）施行，将“答复快、准、可追溯”从服务加分项变为<b>合规硬义务</b>：要求机构建立质量管理制度、风控机制和业务底稿，审计鉴证还需证据链完整、可复核。对以<b>代理记账、涉税服务、企业管家</b>为主业的河北企富财税管理有限公司而言，文件散在个人电脑与微信群、找一篇政策要<b>15～30分钟</b>且难辨现行有效性的现状，已直接构成合规风险。", styles['Body']))
 story.append(Paragraph("学校端是同一矛盾的另一面。教材更新滞后新规半年以上，实训多为教师虚构的“干净数据”，与企业“<b>多版本并存、省市联动、新旧交替</b>”的真场景存在时差。例如石家庄市职工医保在<b>2017年（石政发〔2017〕2号）、2019年（石政规〔2019〕7号）、2024年（石政规〔2024〕7号）</b>三度修订，起付线、报销比、年度限额逐次调整；河北省评审专家管理在2025年以<b>冀财采〔2025〕12号废止冀财采〔2023〕13号</b>。若学生仅凭教材记忆作答，极易引用失效条款。更深层的痛点是：学生<b>会做题，不会查；会背条文，不会断新旧；会用工具，不会审边界</b>。创新创业教育若停留在“写商业计划书”，便无法培养出能在真实合规约束下持续创新的人。", styles['Body']))
-story.append(Paragraph("基于此，学院于<b>2026年7月15日至8月25日</b>选派教师赴企富<b>驻企实践42天</b>，确立“<b>以真实合规清单倒推知识管理能力、以知识库建设牵引教学改革</b>”的总体思路，把企业的知识管理困境转化为师生的创新创业练兵场。", styles['Body']))
+story.append(Paragraph("基于此，学院于<b>2026年7月15日至8月25日</b>选派教师赴企富<b>驻企实践42天</b>，确立“<b>以真实合规清单倒推知识管理能力、以知识库建设牵引教学改革</b>”的总体思路，把企业知识管理困境转化为师生创新创业练兵场。", styles['Body']))
 
 # 二、做法
 story.append(Paragraph("二、主要做法：AI为翼、真题为场，构建“学—做—创”一体模式", styles['Heading1']))
-story.append(Paragraph("案例形成“<b>教师下企业搭平台—AI能力边界当教材—学生接真题进企业</b>”的三段式路径，核心是将企业数字化转型中的真实任务完整搬进教学，使创新创业教育在<b>真需求、真标准、真验收</b>中发生。", styles['Body']))
+story.append(Paragraph("案例形成“<b>教师下企业搭平台—AI能力边界当教材—学生接真题进企业</b>”的三段式路径，核心是将企业数字化转型中的真实任务完整搬进教学，使创新创业教育在<b>真需求、真标准、真验收</b>中发生（见图1）。", styles['Body']))
+
+img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/逻辑结构示意图.png", width=137*mm, height=47.19*mm)
+img.hAlign = 'CENTER'
+story.append(KeepTogether([img, Paragraph("图1 &nbsp; 财税知识库驱动的协同育人逻辑结构示意图", styles['Caption'])]))
 
 story.append(Paragraph("（一）驻企搭平台：从零建成651篇结构化知识库", styles['Heading2']))
 story.append(Paragraph("实践团队采用“<b>实地走访+岗位跟岗+座谈访谈+归集清洗</b>”四步法，走访代理记账、涉税服务、企业管家三条业务线，与审计部、会计部骨干多轮座谈，梳理出“问题—任务—交付物”清单：如月销售额10万元以下小规模纳税人免税、六税两费叠加减征、职工医保住院待遇测算等高频场景，均需秒级溯源。", styles['Body']))
@@ -263,13 +267,13 @@ story.append(t1)
 
 # 图片1和2
 for img_path, caption in [
-    ("申报材料_全国双创_石家庄邮电职业技术学院/配图/图1_企业座谈.jpg", "图1 &nbsp; 教师驻企与审计部、会计部骨干座谈梳理高频政策场景（2026年7月）"),
-    ("申报材料_全国双创_石家庄邮电职业技术学院/配图/图2_需求调研.jpg", "图2 &nbsp; 现场跟岗：记录代理记账岗“找政策—判新旧—答客户”三步耗时"),
+    ("申报材料_全国双创_石家庄邮电职业技术学院/配图/图1_企业座谈.jpg", "图2 &nbsp; 教师驻企与审计部、会计部骨干座谈梳理高频政策场景（2026年7月）"),
+    ("申报材料_全国双创_石家庄邮电职业技术学院/配图/图2_需求调研.jpg", "图3 &nbsp; 座谈调研现场：企业部门骨干介绍业务流程与政策使用场景"),
 ]:
     if os.path.exists(img_path):
         story.append(Spacer(1, 3*mm))
         # 控制图片宽度
-        img = RLImage(img_path, width=120*mm, height=80*mm)
+        img = RLImage(img_path, width=120*mm, height=80*mm, kind="bound")
         img.hAlign = 'CENTER'
         story.append(img)
         story.append(Paragraph(caption, styles['Caption']))
@@ -280,24 +284,11 @@ story.append(Paragraph("<b>1. 首轮5题“抗诱导/防编造”测试（2026�
 # 图3 抗诱导
 if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图4_抗诱导防编造测试.png"):
     story.append(Spacer(1, 3*mm))
-    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图4_抗诱导防编造测试.png", width=135*mm, height=82*mm)
+    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图4_抗诱导防编造测试.png", width=135*mm, height=82*mm, kind="bound")
     img.hAlign = 'CENTER'
     story.append(img)
-    story.append(Paragraph("图3 &nbsp; 首轮抗诱导测试：库外问题“天津市城乡居民医保报销比例”被准确识别为无相关资料，AI未编造", styles['Caption']))
+    story.append(Paragraph("图4 &nbsp; 首轮抗诱导测试：库外问题“天津市城乡居民医保报销比例”被准确识别为无相关资料，AI未编造", styles['Caption']))
 story.append(Paragraph("<b>2. 第二轮14题深度测试（2026年10月28日）。</b>覆盖同题稳定性、引文溯源、跨文档召回、召回截断、多规则叠加、版本识别、多轮记忆等维度，暴露六类典型缺陷：向量召回随机漂移导致同题异答、引用角标无法跳转、长文被截断致要点遗漏、多版本混淆、小点被忽略、上下文脱节。同时诊断出平台硬限制：<b>单次最多返回约45条、无分页参数、体量大时必须手工打标</b>才能稳住召回。", styles['Body']))
-story.append(Paragraph("<b>3. 迭代验证：11.11对比。</b>同样的14题在精细打标后复测，问题显著收敛：同题稳定性“<b>未出现大幅跳动</b>”、引文“<b>可正常跳转并高亮原文段落</b>”、跨文档召回“<b>未出现无关或重复文件</b>”、计费题由错误变为“<b>指出误区并算对7&nbsp;142.4元</b>”、多规则叠加题“<b>不会现编不存在的32号文且更严谨</b>”（见图5）。这一“测—改—再测”的过程本身，就是一堂生动的创新创业课：<b>创新不是追新工具，而是弄清约束、在约束内用规则与流程补位</b>。", styles['Body']))
-if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图5_药品纳入医保精准检索.png"):
-    story.append(Spacer(1, 3*mm))
-    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图5_药品纳入医保精准检索.png", width=135*mm, height=85*mm)
-    img.hAlign = 'CENTER'
-    story.append(img)
-    story.append(Paragraph("图4 &nbsp; 单点细节检索：药品纳入医保条件——精准引用《国家药品目录》与中办发文，结构化作答", styles['Caption']))
-if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图6_三重保障叠加顺序.png"):
-    story.append(Spacer(1, 3*mm))
-    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图6_三重保障叠加顺序.png", width=135*mm, height=82*mm)
-    img.hAlign = 'CENTER'
-    story.append(img)
-    story.append(Paragraph("图5 &nbsp; 多规则叠加实测：贫困透析患者“县域结算→基本医保→大病保险→三重保障”四步叠加顺序被完整还原", styles['Caption']))
 
 # 表2
 story.append(Paragraph("表2 &nbsp; 两轮AI检索测试维度与改进（摘自“知识库测试问题11.11对比.xlsx”）", styles['Caption']))
@@ -323,10 +314,25 @@ t2.setStyle(TableStyle([
     ('ROWBACKGROUNDS', (0,1), (-1,-1), [white, HexColor("#F2F6FC")]),
 ]))
 story.append(t2)
-story.append(Paragraph("注：计费精准性同步验证“次均6000元×131%=7&nbsp;142.4元”案例，改进后能纠正题干误区；会计法罚款上限等版本题由“答错”变为“主动总结新旧差异”。", ParagraphStyle('Note', parent=styles['BodyNoIndent'], fontSize=7, textColor=COLOR_GRAY, firstLineIndent=0, spaceBefore=2)))
+story.append(Paragraph("注：计费题在对比表中记录的参考结果为7&nbsp;142.4元，具体计算口径需结合原始政策核验；会计法罚款上限等版本题由“答错”变为“主动总结新旧差异”。", ParagraphStyle('Note', parent=styles['BodyNoIndent'], fontSize=7, textColor=COLOR_GRAY, firstLineIndent=0, spaceBefore=2)))
+
+if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图5_药品纳入医保精准检索.png"):
+    story.append(Spacer(1, 3*mm))
+    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图5_药品纳入医保精准检索.png", width=135*mm, height=85*mm, kind="bound")
+    img.hAlign = 'CENTER'
+    story.append(img)
+    story.append(Paragraph("图5 &nbsp; 单点细节检索：药品纳入医保条件——精准引用《国家药品目录》与中办发文，结构化作答", styles['Caption']))
+
+story.append(Paragraph("<b>3. 迭代验证：11.11对比。</b>同样的14题在精细打标后复测，问题显著收敛：同题稳定性“<b>未出现大幅跳动</b>”、引文“<b>可正常跳转并高亮原文段落</b>”、跨文档召回“<b>未出现无关或重复文件</b>”、计费题复测记录显示能指出误区，参考结果为<b>7&nbsp;142.4元</b>（计算口径待核验）、多规则叠加题“<b>不会现编不存在的32号文且更严谨</b>”。这一“测—改—再测”的过程本身，就是一堂生动的创新创业课：<b>创新不是追新工具，而是弄清约束、在约束内用规则与流程补位</b>。", styles['Body']))
+if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图6_三重保障叠加顺序.png"):
+    story.append(Spacer(1, 3*mm))
+    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图6_三重保障叠加顺序.png", width=135*mm, height=82*mm, kind="bound")
+    img.hAlign = 'CENTER'
+    story.append(img)
+    story.append(Paragraph("图6 &nbsp; 多规则叠加实测：贫困透析患者“县域结算→基本医保→大病保险→三重保障”四步叠加顺序被完整还原", styles['Caption']))
 
 # 三要素检索规范（用高亮框模拟）
-story.append(Paragraph("图3 &nbsp; 三要素检索规范：业务领域+层级+文档形态", styles['Caption']))
+story.append(Paragraph("表3 &nbsp; 三要素检索规范：业务领域+层级+文档形态", styles['Caption']))
 elem_data = [
     [Paragraph("<b>要素</b>", styles['TableHeader']), Paragraph("<b>示例问法</b>", styles['TableHeader']), Paragraph("<b>检索价值</b>", styles['TableHeader'])],
     [Paragraph("业务领域", styles['TableCellCenter']), Paragraph("职工医保住院报销 / 政府采购评审专家", styles['TableCell']), Paragraph("锁定12领域与80+二级标签", styles['TableCell'])],
@@ -349,15 +355,19 @@ te.setStyle(TableStyle([
 story.append(te)
 if os.path.exists("申报材料_全国双创_石家庄邮电职业技术学院/配图/图3_三要素提问规范.png"):
     story.append(Spacer(1, 3*mm))
-    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图3_三要素提问规范.png", width=120*mm, height=35*mm)
+    img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/图3_三要素提问规范.png", width=120*mm, height=35*mm, kind="bound")
     img.hAlign = 'CENTER'
     story.append(img)
-    story.append(Paragraph("图6 &nbsp; 三要素提问法在企业中的落地示意：说清业务+层级+形态，命中率显著提升", styles['Caption']))
+    story.append(Paragraph("图7 &nbsp; 三要素提问法在企业中的落地示意：说清业务+层级+形态", styles['Caption']))
 story.append(Paragraph("配套产出《知识库使用规范手册》，明确“<b>文件名/文号/层级/业务</b>”四必带、查不到时“<b>加标签缩小范围或直开原文提问</b>”的二阶策略，解决一线“查不到、查不准”痛点。", styles['Body']))
 
 story.append(Paragraph("（三）真题进课堂：毕业设计与课程的双重活化", styles['Heading2']))
 story.append(Paragraph("一期“有库无标、检而不准”的缺口，正是中小企业“<b>知道该做、没人做、不会做</b>”的缩影，也是职业教育可介入的真空。学院将二期“打标重建与索引优化”作为<b>2027届财务管理专业岗位核心知识技能类毕业设计新增选题</b>——“<b>财税法规知识库文档标签体系构建与分类整理</b>”，由<b>财管2401班3名学生</b>组队承接，企业出具验收证明即为答辩依据之一。", styles['Body']))
-story.append(Paragraph("<b>1. 过程真：学生直连企业。</b>小组先赴企富与审计部、会计部骨干座谈，把一线“查不到、查不准”痛点转化为标签设计输入；选取30篇样板文档试打，企业逐条校准二级标签、层级与状态字段口径，通过后才批量推进651篇逐篇打标、重建索引，并用19题测试用例回归验证准确率，针对召回漂移、引文失效等问题以精细标签与人工规则补位。", styles['Body']))
+story.append(Paragraph("<b>1. 过程真：学生直连企业。</b>小组先赴企富与审计部、会计部骨干座谈，把一线“查不到、查不准”痛点转化为标签设计输入；选取30篇样板文档试打，企业逐条校准二级标签、层级与状态字段口径，通过后才批量推进651篇逐篇打标、重建索引，并用19题测试用例回归验证准确率，针对召回漂移、引文失效等问题以精细标签与人工规则补位（见图8）。", styles['Body']))
+img = RLImage("申报材料_全国双创_石家庄邮电职业技术学院/配图/师生毕设指导_原稿.jpg", width=130*mm, height=97.5*mm)
+img.hAlign = 'CENTER'
+story.append(KeepTogether([img, Paragraph("图8 &nbsp; 教师指导毕设小组梳理企业需求、搭建知识库标签体系（2026年10月，原稿图片）", styles['Caption'])]))
+
 story.append(Paragraph("<b>2. 标准真：企业标准替代分数。</b>成果需满足企业“<b>可检索、可维护、可培训</b>”三验收：标签命名让一线同事“不培训也能猜对”，三要素问法让新人“问一次就能中”，使用手册让部门“照着就能教”。学生需在企业面前为自己的打标方案辩护、按反馈迭代，而非在教室交一份教师打分的纸面报告。这一过程本身即是创业预演：<b>需求挖掘—方案设计—客户验证—迭代交付</b>。", styles['Body']))
 story.append(Paragraph("<b>3. 课堂真：4门核心课程活页化。</b>651篇真实政策同步转化为《<b>智慧化税费申报与管理</b>》《<b>财经法规与会计职业道德</b>》《<b>审计实务</b>》《<b>大数据与会计综合实训</b>》案例库：职工医保三版待遇比对做待遇测算实训，小规模纳税人免税与六税两费叠加做申报判断，评审专家七类不良行为与代理机构八项检查内容做合规教育，直接责任与领导责任划分做经济责任审计模拟。标签体系与三要素检索法本身亦成为“数智工具能力”与“综合实训”的训练内容，并以<b>活页、工作手册</b>形态持续更新，破解教材滞后难题。", styles['Body']))
 story.append(Paragraph("<b>4. 评价真：过程性与成果导向并重。</b>毕业设计评价引入<b>企业验收分、检索准确率提升分、手册可用度分</b>，替代单一论文分；课堂评价增加“<b>检索—判断—归档—复用</b>”全链条实操考核，体现全国双创联盟倡导的过程性、多元化考核方向。", styles['Body']))
@@ -372,7 +382,7 @@ story.append(Paragraph("（一）企业端：合规基础设施从无到有，�
 story.append(Paragraph("651篇结构化文档覆盖12领域、80余标签，一线人员由“翻文件夹”升级为“<b>自然语言提问+AI原文引用</b>”作业模式，高频政策查询响应由人均<b>15～30分钟缩短至秒级</b>；已交付审计部<b>6组合规分析</b>，每项形成“<b>事实描述—条款引用—问题定性—整改建议</b>”闭环，覆盖医疗收费、长期挂账、无形资产挪用、资产转固、诊疗收费整改、支出归集等事项，直接协助识别并化解涉税与审计风险，方法论已复制至会计部。", styles['Body']))
 
 # 表3
-story.append(Paragraph("表3 &nbsp; 已交付的6组合规分析（审计部）", styles['Caption']))
+story.append(Paragraph("表4 &nbsp; 已交付的6组合规分析（审计部）", styles['Caption']))
 table3_data = [
     [Paragraph("<b>序号</b>", styles['TableHeader']), Paragraph("<b>事项</b>", styles['TableHeader']), Paragraph("<b>关键条款引用</b>", styles['TableHeader']), Paragraph("<b>成效</b>", styles['TableHeader'])],
     [Paragraph("1", styles['TableCellCenter']), Paragraph("耳鼻喉科医疗收费合规性", styles['TableCell']), Paragraph("医保支付结算+诊疗项目价格", styles['TableCell']), Paragraph("核减不合规收费项", styles['TableCell'])],
