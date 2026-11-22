@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小邮伴学 · 校园快递驿站一天的账怎么算？（VR情景导入）</title>
+<style>
+  :root {
+    --primary: #0f766e;
+    --primary-light: #14b8a6;
+    --accent: #f59e0b;
+    --danger: #ef4444;
+    --bg-dark: #0f172a;
+    --panel-bg: rgba(15, 23, 42, 0.88);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ===== 1. 门外入口封面 ===== */
+  #door-screen {
+    position: fixed; inset: 0; z-index: 100;
+    background: linear-gradient(135deg, #0f172a 0%, #134e4a 55%, #0f172a 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  #door-screen.hidden {
+    opacity: 0; pointer-events: none; transform: scale(1.08);
+  }
+  .door-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(16px);
+    border-radius: 24px;
+    padding: 44px 52px;
+    max-width: 680px;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+  }
+  .badge {
+    display: inline-block; padding: 6px 16px; border-radius: 999px;
+    background: rgba(20, 184, 166, 0.2); border: 1px solid var(--primary-light);
+    color: #5eead4; font-size: 14px; font-weight: 600; margin-bottom: 18px;
+  }
+  .door-title { font-size: 34px; font-weight: 800; line-height: 1.3; margin-bottom: 14px; }
+  .door-sub { font-size: 16px; color: #cbd5e1; line-height: 1.7; margin-bottom: 30px; }
+  .btn-enter {
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+    color: #fff; border: none; padding: 16px 42px; border-radius: 999px;
+    font-size: 20px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 10px 30px rgba(20, 184, 166, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-enter:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(20, 184, 166, 0.55); }
+  .shortcut-tip { margin-top: 20px; font-size: 13px; color: var(--text-muted); }
+
+  /* ===== 2. VR 全景主舞台 ===== */
+  #vr-stage {
+    position: relative; width: 100vw; height: 100vh;
+    overflow: hidden; cursor: grab;
+    background: radial-gradient(circle at 50% 40%, #1e293b 0%, #090d16 100%);
+  }
+  #vr-stage:active { cursor: grabbing; }
+
+  /* 360° 柱面全景容器 */
+  #panorama-world {
+    position: absolute; top: 50%; left: 50%;
+    width: 3600px; height: 760px;
+    transform-style: preserve-3d;
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 0.08s ease-out;
+  }
+
+  /* 驿站真实物理墙面与环境 */
+  .station-wall {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, #1e293b 0%, #334155 48%, #475569 50%, #1e293b 100%);
+    border-top: 12px solid #0f172a;
+    border-bottom: 18px solid #0f172a;
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 0 120px;
+  }
+
+  /* 背景真实元素：货架、招牌、玻璃门 */
+  .bg-prop {
+    position: absolute; pointer-events: none; opacity: 0.9;
+  }
+  .signboard {
+    top: 38px; left: 50%; transform: translateX(-50%);
+    background: #0f766e; border: 4px solid #f59e0b; border-radius: 12px;
+    padding: 12px 48px; font-size: 28px; font-weight: 800; letter-spacing: 3px;
+    color: #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  }
+  .shelf-group {
+    bottom: 110px; width: 320px; height: 340px;
+    background: #334155; border: 6px solid #64748b; border-radius: 8px;
+    display: grid; grid-template-rows: repeat(3, 1fr); gap: 8px; padding: 10px;
+  }
+  .shelf-row {
+    background: #1e293b; border-bottom: 4px solid #94a3b8;
+    display: flex; align-items: flex-end; gap: 10px; padding: 6px 10px;
+  }
+  .parcel {
+    background: #d97706; border: 2px solid #92400e; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #fef3c7;
+  }
+
+  /* ===== 3. 4个真实工位热点 + 中央结账箱 ===== */
+  .hotspot {
+    position: relative; z-index: 10;
+    width: 270px; padding: 20px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 16px 35px rgba(0,0,0,0.45);
+  }
+  .hotspot:hover {
+    transform: translateY(-10px) scale(1.04);
+    border-color: var(--accent);
+    box-shadow: 0 20px 45px rgba(245, 158, 11, 0.3);
+  }
+  .hotspot.done {
+    border-color: #22c55e;
+    box-shadow: 0 16px 35px rgba(34, 197, 94, 0.25);
+  }
+  .hotspot-num {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #0f172a; font-weight: 800; font-size: 13px;
+    padding: 4px 14px; border-radius: 999px;
+  }
+  .hotspot.done .hotspot-num { background: #22c55e; color: #fff; }
+  .hotspot-icon { font-size: 54px; margin: 10px 0; }
+  .hotspot-title { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
+  .hotspot-desc { font-size: 13px; color: #cbd5e1; line-height: 1.5; }
+
+  /* ===== 4. 顶部 HUD 导航与进度 ===== */
+  .hud-top {
+    position: fixed; top: 16px; left: 20px; right: 20px; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    pointer-events: none;
+  }
+  .hud-pill {
+    pointer-events: auto;
+    background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px); border-radius: 999px;
+    padding: 10px 20px; display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  }
+  .lock-list { display: flex; gap: 8px; }
+  .lock-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+  }
+  .lock-dot.unlocked { background: #22c55e; border-color: #4ade80; color: #fff; }
+
+  .hud-btn {
+    background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+    padding: 7px 14px; border-radius: 999px; font-size: 13px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .hud-btn:hover { background: rgba(255,255,255,0.22); }
+
+  /* 底部视角控制条 */
+  .hud-bottom {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 50;
+    background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px); border-radius: 999px;
+    padding: 8px 18px; display: flex; align-items: center; gap: 12px;
+  }
+
+  /* ===== 5. 关卡交互弹窗 ===== */
+  #modal-overlay {
+    position: fixed; inset: 0; z-index: 80;
+    background: rgba(2, 6, 23, 0.78); backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center;
+  }
+  #modal-overlay.open { display: flex; }
+  .modal-box {
+    background: #1e293b; border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 22px; width: 92%; max-width: 720px;
+    padding: 32px; box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 18px; right: 20px;
+    background: rgba(255,255,255,0.1); border: none; color: #fff;
+    width: 34px; height: 34px; border-radius: 50%; font-size: 18px; cursor: pointer;
+  }
+  .modal-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; color: #5eead4; }
+  .modal-body { font-size: 15px; line-height: 1.7; color: #e2e8f0; }
+
+  .task-card {
+    background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px; padding: 16px; margin: 16px 0;
+  }
+  .action-btn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #0f172a; font-weight: 800; border: none; padding: 12px 26px;
+    border-radius: 12px; font-size: 15px; cursor: pointer; margin-top: 10px;
+  }
+  .action-btn.primary { background: linear-gradient(135deg, #14b8a6, #0d9488); color: #fff; }
+  .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .bill-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
+  }
+  .bill-row.warn { background: rgba(245, 158, 11, 0.16); border-left: 4px solid #f59e0b; border-radius: 6px; }
+
+  /* ===== 6. 老师面板（快捷键 T） ===== */
+  #teacher-panel {
+    position: fixed; top: 76px; right: 20px; z-index: 90;
+    width: 340px; background: rgba(15, 23, 42, 0.95);
+    border: 2px solid var(--accent); border-radius: 18px;
+    padding: 20px; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  }
+  #teacher-panel.open { display: block; }
+  .tp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .tp-title { font-size: 16px; font-weight: 800; color: var(--accent); }
+  .tp-section { margin-bottom: 14px; font-size: 13px; line-height: 1.6; color: #cbd5e1; }
+  .tp-label { font-weight: 700; color: #5eead4; display: block; margin-bottom: 4px; }
+  .group-score-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.06); padding: 6px 10px; border-radius: 8px; margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 门外入口 -->
+<div id="door-screen">
+  <div class="door-card">
+    <div class="badge">石家庄邮电职业技术学院 · 《财务机器人应用与开发》情景导入</div>
+    <h1 class="door-title">📦 校园快递驿站一天的账怎么算？</h1>
+    <p class="door-sub">
+      欢迎来到“小邮校园快递驿站”！今天驿站刚营业结束，门口堆着快递面单、桌上摊着纸质账本。<br>
+      请推门进入驿站，按 <strong>1 → 2 → 3 → 4</strong> 顺序打卡 4 个真实工位，集齐 4 把钥匙打开“今日结账箱”！
+    </p>
+    <button class="btn-enter" onclick="enterStation()">🚪 推门进去</button>
+    <div class="shortcut-tip">快捷键：T 老师面板 ｜ ← → 转动视角 ｜ + − 缩放 ｜ 鼠标拖拽环顾</div>
+  </div>
+</div>
+
+<!-- 2. 顶部 HUD -->
+<div class="hud-top">
+  <div class="hud-pill">
+    <span style="font-weight:700;">🔑 今日结账箱进度：</span>
+    <div class="lock-list">
+      <div class="lock-dot" id="lock-1">1</div>
+      <div class="lock-dot" id="lock-2">2</div>
+      <div class="lock-dot" id="lock-3">3</div>
+      <div class="lock-dot" id="lock-4">4</div>
+    </div>
+    <span id="progress-text" style="font-size:13px; color:#94a3b8;">0 / 4 已解锁</span>
+  </div>
+  <div class="hud-pill">
+    <button class="hud-btn" onclick="toggleTeacherPanel()">👩‍🏫 老师面板 (T)</button>
+    <button class="hud-btn" onclick="toggleFullscreen()">⛶ 全屏</button>
+  </div>
+</div>
+
+<!-- 3. VR 全景主舞台 -->
+<div id="vr-stage">
+  <div id="panorama-world">
+    <div class="station-wall">
+      <!-- 装饰性真实环境元素 -->
+      <div class="bg-prop signboard">📦 小邮校园快递驿站 · 每日对账现场</div>
+      <div class="bg-prop shelf-group" style="left: 90px;">
+        <div class="shelf-row">
+          <div class="parcel" style="width:70px;height:55px;">A-102</div>
+          <div class="parcel" style="width:90px;height:65px;">A-105</div>
+          <div class="parcel" style="width:60px;height:45px;">A-108</div>
+        </div>
+        <div class="shelf-row">
+          <div class="parcel" style="width:85px;height:60px;">B-201</div>
+          <div class="parcel" style="width:75px;height:50px;">B-204</div>
+        </div>
+        <div class="shelf-row">
+          <div class="parcel" style="width:110px;height:70px;">大件区 C-01</div>
+          <div class="parcel" style="width:70px;height:50px;">C-03</div>
+        </div>
+      </div>
+
+      <!-- 工位 1：收银台扫码枪 -->
+      <div class="hotspot" id="spot-1" onclick="openStep(1)">
+        <div class="hotspot-num">第 1 关</div>
+        <div class="hotspot-icon">🔫</div>
+        <div class="hotspot-title">收银台 · 扫码枪</div>
+        <div class="hotspot-desc">扫一扫今日快递面单与代收小票，采集原始业务数据。</div>
+      </div>
+
+      <!-- 工位 2：纸质流水账本 -->
+      <div class="hotspot" id="spot-2" onclick="openStep(2)">
+        <div class="hotspot-num">第 2 关</div>
+        <div class="hotspot-icon">📒</div>
+        <div class="hotspot-title">柜台 · 纸质账本</div>
+        <div class="hotspot-desc">学生先判断！手工核对一笔到付件与退件，体会人工算账痛点。</div>
+      </div>
+
+      <!-- 工位 3：财务机器人电脑 -->
+      <div class="hotspot" id="spot-3" onclick="openStep(3)">
+        <div class="hotspot-num">第 3 关</div>
+        <div class="hotspot-icon">🤖</div>
+        <div class="hotspot-title">电脑 · 财务机器人</div>
+        <div class="hotspot-desc">一键运行 RPA 机器人，3 秒汇总全天流水，自动标黄异常单据。</div>
+      </div>
+
+      <!-- 工位 4：店长红笔终审台 -->
+      <div class="hotspot" id="spot-4" onclick="openStep(4)">
+        <div class="hotspot-num">第 4 关</div>
+        <div class="hotspot-icon">🖊️</div>
+        <div class="hotspot-title">店长台 · 红笔终审</div>
+        <div class="hotspot-desc">AI 只辅助、教师做终审！对破损赔付争议单进行人工终审裁决。</div>
+      </div>
+
+      <div class="bg-prop shelf-group" style="right: 90px;">
+        <div class="shelf-row">
+          <div class="parcel" style="width:80px;height:55px;">待取 D-11</div>
+          <div class="parcel" style="width:85px;height:65px;">D-12</div>
+        </div>
+        <div class="shelf-row">
+          <div class="parcel" style="width:100px;height:60px;">异常件暂存</div>
+        </div>
+        <div class="shelf-row">
+          <div class="parcel" style="width:90px;height:50px;">E-05</div>
+          <div class="parcel" style="width:70px;height:55px;">E-09</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. 底部控制条 -->
+<div class="hud-bottom">
+  <button class="hud-btn" onclick="panBy(320)">← 往左转</button>
+  <button class="hud-btn" onclick="resetView()">🎯 回正</button>
+  <button class="hud-btn" onclick="panBy(-320)">往右转 →</button>
+  <span style="color:#64748b;">|</span>
+  <button class="hud-btn" onclick="zoomBy(0.12)">＋ 放大</button>
+  <button class="hud-btn" onclick="zoomBy(-0.12)">－ 缩小</button>
+</div>
+
+<!-- 5. 关卡交互弹窗 -->
+<div id="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- 6. 老师面板 -->
+<div id="teacher-panel">
+  <div class="tp-header">
+    <span class="tp-title">👩‍🏫 老师面板（汇报/授课助手）</span>
+    <button class="hud-btn" onclick="toggleTeacherPanel()">收起</button>
+  </div>
+  <div class="tp-section">
+    <span class="tp-label">💬 这一步老师可以这样说：</span>
+    <div id="tp-say">请点击“推门进去”，带学生/评委走进校园快递驿站真实场景。</div>
+  </div>
+  <div class="tp-section">
+    <span class="tp-label">🎯 学生要做的：</span>
+    <div id="tp-do">按 1→2→3→4 顺序环顾驿站并完成对账闯关。</div>
+  </div>
+  <div class="tp-section">
+    <span class="tp-label">🏆 小组积分（点击 +1）：</span>
+    <div class="group-score-row"><span>第一组</span><button class="hud-btn" onclick="addScore(0)">+1 (<span id="sc-0">0</span>分)</button></div>
+    <div class="group-score-row"><span>第二组</span><button class="hud-btn" onclick="addScore(1)">+1 (<span id="sc-1">0</span>分)</button></div>
+    <div class="group-score-row"><span>第三组</span><button class="hud-btn" onclick="addScore(2)">+1 (<span id="sc-2">0</span>分)</button></div>
+  </div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <button class="hud-btn" onclick="resetAll()">🔄 清零重来</button>
+  </div>
+</div>
+
+<script>
+  let panX = 0, scale = 1;
+  let isDragging = false, startX = 0;
+  const completed = { 1: false, 2: false, 3: false, 4: false };
+  const scores = [0, 0, 0];
+
+  const world = document.getElementById('panorama-world');
+  const stage = document.getElementById('vr-stage');
+
+  function updateTransform() {
+    panX = Math.max(-1100, Math.min(1100, panX));
+    scale = Math.max(0.75, Math.min(1.45, scale));
+    world.style.transform = `translate(calc(-50% + ${panX}px), -50%) scale(${scale})`;
+  }
+  function panBy(dx) { panX += dx; updateTransform(); }
+  function zoomBy(ds) { scale += ds; updateTransform(); }
+  function resetView() { panX = 0; scale = 1; updateTransform(); }
+
+  stage.addEventListener('mousedown', e => {
+    if (e.target.closest('.hotspot')) return;
+    isDragging = true; startX = e.clientX;
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    panX += (e.clientX - startX) * 1.1;
+    startX = e.clientX;
+    updateTransform();
+  });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+
+  function enterStation() {
+    document.getElementById('door-screen').classList.add('hidden');
+    updateTeacherGuide(0);
+  }
+
+  function updateTeacherGuide(step) {
+    const guides = {
+      0: { say: '“同学们，今天我们不去机房，先走进每天都去的校园快递驿站，看看一天几百个包裹的账怎么算。”', do: '环顾驿站，点击【第1关：收银台扫码枪】。' },
+      1: { say: '“用扫码枪扫一扫，原始数据有了，但里面混着普通件、到付件和破损件。”', do: '点击“开始扫码”，采集今日 3 笔典型面单。' },
+      2: { say: '“先不用 AI，大家自己心算判断一下这笔账该记多少？这就是‘学生先判断’。”', do: '选择正确的实收金额，体会手工算账的繁琐。' },
+      3: { say: '“现在请出我们的财务机器人！它 1 秒汇总流水，但遇到拿不准的破损赔付单，会自动标黄。”', do: '点击“启动财务机器人”，观察异常单据标黄。' },
+      4: { say: '“AI 只是辅助，遇到争议赔付，必须由人来做最终裁决——这就是‘教师终审队列’。”', do: '完成红笔终审，集齐 4 把钥匙打开结账箱！' }
+    };
+    const g = guides[step] || guides[0];
+    document.getElementById('tp-say').innerText = g.say;
+    document.getElementById('tp-do').innerText = g.do;
+  }
+
+  function openStep(step) {
+    updateTeacherGuide(step);
+    const box = document.getElementById('modal-content');
+    if (step === 1) {
+      box.innerHTML = `
+        <div class="modal-title">🔫 第 1 关：收银台扫码枪采集数据</div>
+        <div class="modal-body">
+          <p>今天驿站共收到 328 个包裹，我们先用扫码枪抽取 3 笔典型面单：</p>
+          <div class="task-card" id="scan-result">
+            <div style="color:#94a3b8;">等待扫码枪触发……</div>
+          </div>
+          <button class="action-btn primary" onclick="runScan()">🔫 按下扫码枪</button>
+        </div>`;
+    } else if (step === 2) {
+      box.innerHTML = `
+        <div class="modal-title">📒 第 2 关：纸质账本（学生先判断）</div>
+        <div class="modal-body">
+          <p>在启动机器人前，请先人工核对这笔账：<strong>寄件费 12 元 + 保价费 2 元 - 校园优惠券 3 元</strong>，实收应记多少？</p>
+          <div class="task-card" style="display:flex; gap:12px;">
+            <button class="action-btn" onclick="checkManual(11, false)">14 元</button>
+            <button class="action-btn" onclick="checkManual(11, true)">11 元</button>
+            <button class="action-btn" onclick="checkManual(11, false)">9 元</button>
+          </div>
+          <div id="manual-msg" style="margin-top:10px; font-weight:700;"></div>
+        </div>`;
+    } else if (step === 3) {
+      box.innerHTML = `
+        <div class="modal-title">🤖 第 3 关：财务机器人自动对账</div>
+        <div class="modal-body">
+          <p>人工算 328 笔要 2 小时，现在点击启动 RPA 财务机器人：</p>
+          <div class="task-card" id="rpa-result">
+            <div style="color:#94a3b8;">机器人待命中……</div>
+          </div>
+          <button class="action-btn primary" onclick="runRPA()">▶ 启动财务机器人</button>
+        </div>`;
+    } else if (step === 4) {
+      box.innerHTML = `
+        <div class="modal-title">🖊️ 第 4 关：店长台红笔终审</div>
+        <div class="modal-body">
+          <p>机器人刚才标黄了一笔<strong>“快递破损赔付争议单（金额 85 元，凭证照片模糊）”</strong>，已自动进入教师/店长终审队列。</p>
+          <div class="task-card">
+            <div class="bill-row warn">
+              <span>⚠️ 异常单 #SF-9021：破损赔付 85 元</span>
+              <span>AI 置信度：62%（低）</span>
+            </div>
+          </div>
+          <button class="action-btn primary" onclick="finishAudit()">✅ 核实照片后红笔签字通过</button>
+        </div>`;
+    }
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function runScan() {
+    document.getElementById('scan-result').innerHTML = `
+      <div class="bill-row"><span>📦 单号 #YT-101（普通寄件）</span><span>+ 12.00 元</span></div>
+      <div class="bill-row"><span>📦 单号 #JD-208（到付代收）</span><span>+ 25.00 元</span></div>
+      <div class="bill-row warn"><span>⚠️ 单号 #SF-9021（破损赔付申请）</span><span>- 85.00 元（待核）</span></div>
+      <div style="margin-top:10px; color:#4ade80; font-weight:700;">✅ 数据采集完成！第 1 把钥匙已解锁。</div>`;
+    markDone(1);
+  }
+
+  function checkManual(ans, ok) {
+    const msg = document.getElementById('manual-msg');
+    if (ok) {
+      msg.innerHTML = '<span style="color:#4ade80;">✅ 判断正确（11元）！手工算1笔还行，328笔就得靠机器人了。第 2 把钥匙已解锁！</span>';
+      markDone(2);
+    } else {
+      msg.innerHTML = '<span style="color:#f87171;">❌ 算错了哦，再看看：12 + 2 - 3 = ?</span>';
+    }
+  }
+
+  function runRPA() {
+    document.getElementById('rpa-result').innerHTML = `
+      <div class="bill-row"><span>⚡ 已自动核对正常流水 327 笔</span><span style="color:#4ade80;">耗时 0.8 秒</span></div>
+      <div class="bill-row warn"><span>⚠️ 发现 1 笔低置信度异常账目</span><span>已推送至第 4 关【店长终审】</span></div>
+      <div style="margin-top:10px; color:#4ade80; font-weight:700;">✅ 机器人对账完成！第 3 把钥匙已解锁。</div>`;
+    markDone(3);
+  }
+
+  function finishAudit() {
+    markDone(4);
+    document.getElementById('modal-content').innerHTML = `
+      <div class="modal-title">🎉 恭喜！今日结账箱 4 把锁全部打开！</div>
+      <div class="modal-body">
+        <p>你已经完整体验了<strong>“学生先判断 → AI 辅助初筛 → 教师红笔终审”</strong>的真实业务闭环！</p>
+        <div class="task-card">
+          <div>📊 今日驿站实收：<strong>3,420.00 元</strong> ｜ 耗时：<strong>1.2 分钟</strong>（原人工 2 小时）</div>
+        </div>
+        <button class="action-btn primary" onclick="closeModal()">返回驿站全景</button>
+      </div>`;
+  }
+
+  function markDone(step) {
+    completed[step] = true;
+    document.getElementById(`spot-${step}`).classList.add('done');
+    document.getElementById(`lock-${step}`).classList.add('unlocked');
+    const count = Object.values(completed).filter(Boolean).length;
+    document.getElementById('progress-text').innerText = `${count} / 4 已解锁`;
+  }
+
+  function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+  function toggleTeacherPanel() { document.getElementById('teacher-panel').classList.toggle('open'); }
+  function addScore(idx) { scores[idx]++; document.getElementById(`sc-${idx}`).innerText = scores[idx]; }
+  function resetAll() {
+    for (let i = 1; i <= 4; i++) {
+      completed[i] = false;
+      document.getElementById(`spot-${i}`).classList.remove('done');
+      document.getElementById(`lock-${i}`).classList.remove('unlocked');
+    }
+    document.getElementById('progress-text').innerText = '0 / 4 已解锁';
+    closeModal();
+  }
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 't' || e.key === 'T') toggleTeacherPanel();
+    if (e.key === 'ArrowLeft') panBy(220);
+    if (e.key === 'ArrowRight') panBy(-220);
+    if (e.key === '+' || e.key === '=') zoomBy(0.1);
+    if (e.key === '-') zoomBy(-0.1);
+  });
+</script>
+</body>
+</html>
