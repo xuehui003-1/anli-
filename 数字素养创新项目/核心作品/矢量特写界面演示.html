@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>HTML/SVG 矢量高清特写演示</title>
+<style>
+  body {
+    margin: 0; min-height: 100vh; background: #0f172a; color: #f8fafc;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 30px;
+  }
+  .ledger {
+    width: 680px; background: #fffbeb; color: #1e293b; border-radius: 12px;
+    border: 3px solid #b45309; box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    padding: 28px 34px; position: relative;
+  }
+  .ledger-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 2px solid #dc2626; padding-bottom: 10px; margin-bottom: 16px;
+  }
+  .ledger-title { font-size: 22px; font-weight: 800; color: #b91c1c; letter-spacing: 2px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { border: 1px solid #fca5a5; padding: 10px 12px; text-align: left; }
+  th { background: #fef2f2; color: #991b1b; }
+  .stamp {
+    position: absolute; right: 36px; bottom: 24px;
+    border: 3px solid #dc2626; color: #dc2626; border-radius: 50%;
+    width: 84px; height: 84px; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 14px; transform: rotate(-15deg); opacity: 0.85;
+  }
+</style>
+</head>
+<body>
+  <div style="color:#5eead4; font-size:15px;">👇 这就是“矢量高清特写”——无论在 4K 还是 8K 大屏上全屏放大，文字和线条永远 100% 锐利无马赛克：</div>
+  <div class="ledger">
+    <div class="ledger-header">
+      <div class="ledger-title">📒 小邮快递驿站 · 每日现金流水账本</div>
+      <div style="font-size:13px; color:#64748b;">日期：2026-11-22 ｜ 第 08 页</div>
+    </div>
+    <table>
+      <tr><th>单号</th><th>业务类型</th><th>应收/实收</th><th>备注</th></tr>
+      <tr><td>#YT-101</td><td>普通寄件</td><td>+12.00 元</td><td>已微信收款</td></tr>
+      <tr><td>#JD-208</td><td>到付代收</td><td>+25.00 元</td><td>学生自取</td></tr>
+      <tr style="background:#fef3c7;"><td>#SF-9021</td><td>破损赔付争议</td><td>-85.00 元</td><td style="color:#d97706; font-weight:700;">⚠️ 待店长红笔终审</td></tr>
+    </table>
+    <div class="stamp">待终审</div>
+  </div>
+</body>
+</html>
