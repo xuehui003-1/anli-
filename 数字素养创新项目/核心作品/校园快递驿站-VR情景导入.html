@@ -165,7 +165,7 @@
   img.src = PANO_SRC;
 
   // 360° 无限连续旋转经纬度
-  let lon = 140, lat = -4, fov = 120;
+  let lon = 180, lat = -2, fov = 140;
   let targetLon = null, targetLat = null, targetFov = null;
   let isDragging = false, startX = 0, startY = 0, startLon = 0, startLat = 0;
   let muted = false;
@@ -218,17 +218,8 @@
 
       ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
       ctx.clearRect(0, 0, w, h);
-      if (sx < 0) {
-        const leftW = -sx;
-        ctx.drawImage(img, iw - leftW, sy, leftW, viewH, 0, 0, (leftW / viewW) * w, h);
-        ctx.drawImage(img, 0, sy, viewW - leftW, viewH, (leftW / viewW) * w, 0, ((viewW - leftW) / viewW) * w, h);
-      } else if (sx + viewW > iw) {
-        const rightW = iw - sx;
-        ctx.drawImage(img, sx, sy, rightW, viewH, 0, 0, (rightW / viewW) * w, h);
-        ctx.drawImage(img, 0, sy, viewW - rightW, viewH, (rightW / viewW) * w, 0, ((viewW - rightW) / viewW) * w, h);
-      } else {
-        ctx.drawImage(img, sx, sy, viewW, viewH, 0, 0, w, h);
-      }
+      const clampedSx = Math.max(0, Math.min(iw - viewW, sx));
+      ctx.drawImage(img, clampedSx, sy, viewW, viewH, 0, 0, w, h);
 
       hotspots.forEach(hp => {
         let dLon = ((hp.lon - lon + 540) % 360) - 180;
