@@ -43,12 +43,19 @@ def F(px, bold=False):
 def tw(t, f):
     b = f.getbbox(t); return b[2]-b[0]
 _NOS = "、。，）」』】！？：；…—·%”’"
+_DIG = "0123456789,.%"
 def wrap(t, f, maxw):
     out, cur = [], ""
     for ch in t:
         if ch == "\n":
             out.append(cur); cur = ""; continue
         if tw(cur+ch, f) > maxw and cur:
+            # 不许把一串数字断开（如 651 篇 / 1,093 条）
+            k = len(cur)
+            while k > 0 and cur[k-1] in _DIG:
+                k -= 1
+            if k > 0 and k < len(cur) and ch in _DIG:
+                out.append(cur[:k]); cur = cur[k:] + ch; continue
             if ch in _NOS:            # 行首禁则：标点不留行首
                 cur += ch
                 out.append(cur); cur = ""
@@ -392,7 +399,7 @@ def p5(folder="第05页_新形态"):
 # ---------------------------------------------------------------- P6 新场景
 def p6(folder="第06页_新场景"):
     cv, d, y = base(6, "P6 · 新场景", "真任务 · 新场景",
-                    "任务在哪发生？从纸上搬到五个真现场——能转头、能转身、能跑起来", 72, 40)
+                    "任务在哪发生？以前在纸上，现在在五个真地方。", 72, 40)
     # 大卡：图1
     bx0, by0, bx1 = L, y+4, L+1112
     bh = 372
@@ -578,21 +585,32 @@ def p9(folder="第09页_效果"):
 
 # ---------------------------------------------------------------- P10 被用了三次
 def p10(folder="第10页_三个身份"):
-    cv, d, y = base(10, "P10 · 可复制", "同一个文件，被用了三次",
-                    "先在课堂上教 → 用出 5 类毛病 → 毛病变成毕设真题 → 毕设成果交到企业手上", 72, 40)
+    cv = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(cv)
+    d.rectangle([0, 0, 26, H], fill=GREEN)
+    d.text((L, 52), "P10 · 可复制", font=F(30), fill=ORD)
+    pn = "10 / 10"; d.text((R-tw(pn, F(30)), 52), pn, font=F(30), fill=LGREY)
+    d.text((L, 92), "同一个文件，我们用了三次", font=F(72, True), fill=GREEN)
+    d.text((L, 184), "先在课堂上用，用出 5 个毛病；3 个学生拿这 5 个毛病做毕业设计；",
+           font=F(32), fill=DGREY)
+    d.text((L, 226), "学生做出来的东西，企业审计部现在天天在用。", font=F(32), fill=DGREY)
+    d.line([(L, 290), (R, 290)], fill=LINE, width=2)
 
     steps = [
-        ("用第 1 次", "在课堂上用", "115 名学生、13 堂课，六个岗天天转：点名、秒批、记账、判过关",
-         "用出 5 类毛病（做了 19 题体检）"),
-        ("用第 2 次", "在毕设里用", "那 5 类毛病成了 3 名学生的毕设真题：给 651 篇政策打标、建标签体系",
-         "企业验收"),
-        ("用第 3 次", "在企业里用", "毕设做出来的 6 组合规分析，直接进了审计部日常作业",
-         "已经天天在用"),
+        ("用第 1 次", "在课堂上用",
+         "115 名学生、13 堂课，每节课都在用：抽人、批作业、记分、判过关。",
+         "用 19 道题考它一遍，查出 5 个毛病"),
+        ("用第 2 次", "在毕设里用",
+         "3 个学生把这 5 个毛病当成毕业设计题目：给 651 篇政策一条条打标签。",
+         "企业看过，验收通过"),
+        ("用第 3 次", "在企业里用",
+         "学生做出来的 6 组分析，放进企业审计部，现在每天在用。",
+         "天天在用，不是摆着看"),
     ]
     gap = 56
     cw = (R-L-2*gap)//3
-    top = y + 2
-    chh = 262
+    top = 310
+    chh = 264
     for i, (idx, who, duty, endtxt) in enumerate(steps):
         x0 = L + i*(cw+gap)
         rr(d, [x0+4, top+8, x0+cw+4, top+chh+8], 14, fill=(233, 227, 216))
@@ -602,37 +620,36 @@ def p10(folder="第10页_三个身份"):
         wlab = tw(lab, lf) + 26
         rr(d, [x0+22, top+20, x0+22+wlab, top+54], 6, fill=GREEN)
         d.text((x0+35, top+25), lab, font=lf, fill=WHITE)
-        d.text((x0+22, top+70), who, font=F(44, True), fill=GREEN)
-        para(d, (x0+22, top+132), duty, F(22), DGREY, cw-44, 1.42, 3)
-        d.line([(x0+22, top+chh-52), (x0+cw-22, top+chh-52)], fill=LINE, width=1)
-        d.text((x0+22, top+chh-42), "→ " + endtxt, font=F(21, True), fill=ORD)
+        d.text((x0+22, top+68), who, font=F(44, True), fill=GREEN)
+        para(d, (x0+22, top+128), duty, F(23), DGREY, cw-44, 1.42, 3)
+        d.line([(x0+22, top+chh-50), (x0+cw-22, top+chh-50)], fill=LINE, width=1)
+        d.text((x0+22, top+chh-40), "→ " + endtxt, font=F(21, True), fill=ORD)
         if i < 2:
             ax = x0 + cw + 12
             ay = top + chh//2
             d.line([(ax, ay), (ax+32, ay)], fill=OR, width=5)
             d.polygon([(ax+32, ay-10), (ax+48, ay), (ax+32, ay+10)], fill=OR)
-    # 第一二步之间的交接说明
-    ay = top + chh + 22
-    d.text((L, ay), "课堂用出来的毛病，就是毕设的题；毕设做出来的东西，交到企业手里——同一条线，不是三件不相干的事。",
-           font=F(24), fill=DGREY)
+    d.text((L, top+chh+18),
+           "毛病是课堂上用出来的，题目是学生拿毛病做的，东西是企业拿去天天用的——一环扣一环。",
+           font=F(25), fill=DGREY)
 
     # ---- 下半区：换一门课只换三样
-    ly = ay + 56
+    ly = top + chh + 62
     d.line([(L, ly), (R, ly)], fill=LINE, width=2)
-    d.text((L, ly+16), "要换一门课，换的是这三样——页面程序不动一行：", font=F(34, True), fill=GREEN)
-    ty = ly + 74
+    d.text((L, ly+16), "换一门课，只换这三样东西，程序一行都不用改：", font=F(32, True), fill=GREEN)
+    ty = ly + 72
     fw2, fh2 = 140, 140
     gap2 = 26
     iw = (R-L-fw2-2*gap2)//3
-    ch2 = 236
+    ch2 = 232
     for i in range(3):
         x0 = L + i*(iw+gap2)
         rr(d, [x0+3, ty+6, x0+iw+3, ty+ch2+6], 12, fill=(233, 227, 216))
         rr(d, [x0, ty, x0+iw, ty+ch2], 12, fill=WHITE, outline=LINE, w=2)
-        img_at(cv, find_img(folder, i+1), (x0+2, ty+2, x0+iw-2, ty+150), 10)
-        d.text((x0+20, ty+164), ["① 一张全景照片", "② 一份任务清单", "③ 一套课件"][i],
-               font=F(27, True), fill=GREEN)
-        d.text((x0+20, ty+200), ["换场地", "换任务", "换内容"][i], font=F(21), fill=LGREY)
+        img_at(cv, find_img(folder, i+1), (x0+2, ty+2, x0+iw-2, ty+146), 10)
+        d.text((x0+20, ty+158), ["① 一张全景照片", "② 一份任务清单", "③ 一套课件"][i],
+               font=F(26, True), fill=GREEN)
+        d.text((x0+20, ty+194), ["换成别的场地", "换成别的任务", "换成别的课"][i], font=F(21), fill=LGREY)
     fx = L + 3*(iw+gap2) + 10
     fyv = ty + 4
     pth = find_img(folder, 4)
@@ -644,7 +661,7 @@ def p10(folder="第10页_三个身份"):
         d.text((fx+8, fyv+74), "13 MB", font=F(34, True), fill=ORD)
     d.text((fx-6, fyv+fh2+14), "整个课堂 =", font=F(23, True), fill=GREEN)
     d.text((fx-6, fyv+fh2+44), "一个 13 MB 文件", font=F(23, True), fill=GREEN)
-    quote(d, "别人也照着做得出来，这才叫方法；只能演一遍的，只是个案例。", ty+ch2+22, 40)
+    quote(d, "别人照着也能做出来，这才叫方法；只能演一遍的，只能算个案例。", ty+ch2+16, 38)
     return cv
 
 PAGES = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]
