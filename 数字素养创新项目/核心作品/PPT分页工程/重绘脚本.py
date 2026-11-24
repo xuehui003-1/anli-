@@ -285,44 +285,66 @@ def p3(folder="第03页_四真四新"):
            font=F(27, True), fill=GREEN)
     return cv
 
-# ---------------------------------------------------------------- P4 一堂课怎么走
+# ---------------------------------------------------------------- P4 一堂课怎么走（四段·智能体在干什么）
 def p4(folder="第04页_一堂课怎么走"):
-    cv, d, y = base(4, "P4 · 一堂课怎么走", "四新不是四个功能，是同一堂课的四层",
-                    "一节 85 分钟的课，四段时间，每一段都有小邮在干活", 70)
-    gap = 26
-    cw = (R-L-3*gap)//4
-    axis = 352
-    top = 372
-    chh = 522
-    d.line([(L, axis), (R-40, axis)], fill=GREEN, width=2)
+    cv = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(cv)
+    d.rectangle([0, 0, 26, H], fill=GREEN)
+    d.text((L, 56), "P4 · 一堂课怎么走", font=F(30), fill=ORD)
+    pn = "4 / 10"; d.text((R-tw(pn, F(30)), 56), pn, font=F(30), fill=LGREY)
+    d.text((L, 96), "四段时间，小邮各干一件老师干不了的活", font=F(62, True), fill=GREEN)
+    d.text((L, 186), "每一段只说三件事：小邮在这里干什么 · 靠什么 · 新在哪。", font=F(30), fill=DGREY)
+    d.line([(L, 240), (R, 240)], fill=LINE, width=2)
+
     cards = [
-        (1, "0–15 分", "课前导入", "驿站全景里找五件实物，找到就进任务",
-         "小邮在门口迎你，念一遍今天的任务", "新场景 · 4K 全景 VR 驿站"),
-        (2, "15–40 分", "课中讲", "原页课件一页页讲；讲到第 38 页全班停下写",
-         "小邮按页守着，到点提醒「该写记录册了」", "新形态 · 互动课件 / 知识星图"),
-        (3, "40–65 分", "课中练", "手势答题、车间先押再跑、九站一个个点亮",
-         "小邮看得见你的手，当场判、当场亮站", "新场景 · 3D 手部骨骼识别"),
-        (4, "65–85 分", "课后复盘", "大屏一拉：谁加了几分、哪一站没亮，当场点人",
-         "小邮把这一节的分记完，只从举了册子的人里抽", "新证据 · 13 堂课的成绩单"),
+        (1, "0–15 分", "课前导入",
+         "把学校真驿站的全景推到你眼前，念一遍今天的任务：桌上五件实物，找齐了才发任务单。",
+         "靠", "4K 全景照片 · 点击定位 · 语音引导",
+         "过去导入是老师讲一段，学生还没坐定；现在是学生自己在真场地里找，找到没找到，小邮知道。",
+         "5 件"),
+        (2, "15–40 分", "课中讲",
+         "按页守着 154 页课件，讲到第 38 页自动停下，把记录册那三格推上大屏，念一遍要求。",
+         "靠", "互动课件 · 知识星图 11 点 · 语音朗读",
+         "过去停不停、停在哪，只有我记得；现在课件自己会停，停下后谁写了谁没写，当场知道。",
+         "第 38 页"),
+        (3, "40–65 分", "课中练",
+         "手一比就答题（认 21 个骨骼点），车间里先押再跑，九个站做完一站亮一站。",
+         "靠", "3D 手部骨骼识别 · 财务机器人 · 九站闯关",
+         "过去练完收上来，下周才批；现在练到哪判到哪，谁卡住了当场露出来。",
+         "9 站"),
+        (4, "65–85 分", "课后复盘",
+         "把这一节所有人的分记完，大屏一拉；再从举了册子的人里抽人，当场问。",
+         "靠", "实时大屏 · 算法抽人 · 每条带时间戳",
+         "过去复盘凭记忆、点人凭老师；现在看着这一节的数据点人，点谁由算法抽，学生服。",
+         "42 次"),
     ]
-    for i, (n, tm, name, desc, duty, tag) in enumerate(cards):
+    gap = 24
+    cw = (R-L-3*gap)//4
+    top = 252
+    chh = 536
+    for i, (n, tm, name, duty, lab2, tech, newtxt, num) in enumerate(cards):
         x0 = L + i*(cw+gap)
-        cx = x0 + cw//2
-        d.line([(cx, axis-18), (cx, axis)], fill=GREEN, width=2)
-        d.ellipse([cx-9, axis-9, cx+9, axis+9], fill=OR)
         rr(d, [x0+4, top+8, x0+cw+4, top+chh+8], 14, fill=(233, 227, 216))
         rr(d, [x0, top, x0+cw, top+chh], 14, fill=WHITE, outline=LINE, w=2)
-        img_at(cv, find_img(folder, n), (x0+2, top+2, x0+cw-2, top+168), 12)
-        d.text((x0+24, top+190), tm, font=F(30, True), fill=ORD)
-        d.text((x0+24, top+228), name, font=F(52, True), fill=GREEN)
-        para(d, (x0+24, top+294), desc, F(24), DGREY, cw-48, 1.45, 2)
-        rr(d, [x0+18, top+366, x0+cw-18, top+chh-66], 8, fill=LGREEN)
-        d.text((x0+34, top+380), "小邮这一段的活", font=F(20, True), fill=GREEN)
-        para(d, (x0+34, top+406), duty, F(21), GREEN, cw-70, 1.35, 2)
-        d.line([(x0+24, top+chh-52), (x0+cw-24, top+chh-52)], fill=LINE, width=1)
-        d.text((x0+24, top+chh-44), tag, font=F(20), fill=LGREY)
-    quote(d, "同一个班、同一节课、没加一分钟课时。", top+chh+40, 48,
-          "课前导入、课中讲、课中练、课后复盘——四段时间各用一种技术组合，不是四个并列的功能。")
+        img_at(cv, find_img(folder, n), (x0+2, top+2, x0+cw-2, top+120), 12)
+        d.text((x0+24, top+132), tm, font=F(25, True), fill=ORD)
+        nf = F(25, True)
+        d.text((x0+cw-24-tw(num, nf), top+132), num, font=nf, fill=ORD)
+        d.text((x0+24, top+166), name, font=F(42, True), fill=GREEN)
+        # 小邮在这里
+        rr(d, [x0+16, top+222, x0+cw-16, top+354], 10, fill=LGREEN)
+        d.text((x0+32, top+234), "小邮在这里", font=F(18, True), fill=GREEN)
+        para(d, (x0+32, top+260), duty, F(21), GREEN, cw-64, 1.35, 3)
+        # 靠什么
+        d.text((x0+24, top+366), "靠", font=F(17, True), fill=GREEN)
+        para(d, (x0+52, top+364), tech, F(18), (96, 110, 112), cw-76, 1.35, 2)
+        # 新在哪
+        d.text((x0+24, top+410), "新在哪", font=F(17, True), fill=OR)
+        para(d, (x0+24, top+436), newtxt, F(18), DGREY, cw-44, 1.35, 4)
+        # 数字
+        nf = F(34, True)
+    quote(d, "同一个班、同一节课、没加一分钟课时。", top+chh+36, 42,
+          "四段不是四个功能并排，是一节课的四个环节；每一段小邮都在干活，只是干的活不一样。")
     return cv
 
 # ---------------------------------------------------------------- P5 新形态
