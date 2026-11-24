@@ -170,76 +170,119 @@ def p1(folder="第01页_封面"):
     d.text((1640, 1006), "2026.11.28", font=F(30), fill=(226, 222, 214))
     return cv
 
-# ---------------------------------------------------------------- P2 初衷
+# ---------------------------------------------------------------- P2 初衷（四个老问题）
 def p2(folder="第02页_初衷"):
-    cv, d, y = base(2, "P2 · 初衷", "为什么做这个东西", "三件真事，都发生在我的课上")
-    top = y + 6
-    gap = 32
-    cw = (R-L-2*gap)//3
-    chh = 630
+    cv = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(cv)
+    d.rectangle([0, 0, 26, H], fill=GREEN)
+    d.text((L, 62), "P2 · 初衷", font=F(30), fill=ORD)
+    pn = "2 / 10"; d.text((R-tw(pn, F(30)), 62), pn, font=F(30), fill=LGREY)
+    d.text((L, 104), "这四件事，以前一直没人管", font=F(74, True), fill=GREEN)
+    d.text((L, 202), "不是新问题，是老问题：一个没人管，一个看不见，一个说不准，一个忙不过来。", font=F(30), fill=DGREY)
+    d.line([(L, 266), (R, 266)], fill=LINE, width=2)
+
     cards = [
-        (1, "01", "课上讲 154 页", "课下 AI 另讲一套",
-         "学生课上听我讲，晚上问 AI——两个版本对不上，我还得花时间解释「以课上为准」。",
-         "同一个知识，两个版本"),
-        (2, "02", "记录册写得挺好", "没人有工夫逐本看",
-         "一个班 41 本、74 本，写得认真；收上来摞在桌上，一学期翻不了几遍。",
-         "写得认真，看得很少"),
-        (3, "03", "机房 41 台老电脑", "装不了新系统",
-         "想上个新平台，先卡在装不装得上。一装不上，整堂课就没法上。",
-         "平台再好，装不上"),
+        (1, "①", "没人管", "问题", "没人管",
+         [("以前", "课件 154 页，讲到第 38 页该停了，只有我记得。"),
+          ("当时", "学生指着第 12 页问，我一说就下课了；下节课又从头讲。")],
+         "课讲到哪儿，只有我记得。"),
+        (2, "②", "看不见", "问题", "看不见",
+         [("以前", "一个班 41 本、74 本笔记，收上来摞在桌上。"),
+          ("当时", "一学期翻不了几遍：写得乱、抄得对不对、谁没交，都看不出来。")],
+         "写得对不对，没人给学生一句话。"),
+        (3, "③", "说不准", "问题", "说不准",
+         [("以前", "谁平时认真、谁在混，凭印象记。到期末，印象早糊了。"),
+          ("当时", "加多少分、扣多少分，学生不知道，我也不知道凭什么叫人服。")],
+         "平时分，凭的是印象。"),
+        (4, "④", "忙不过来", "问题", "忙不过来",
+         [("以前", "课堂是老师讲、学生听，讲完就散。"),
+          ("当时", "点名、批作业、记分、判过关，全是老师一个人的活，忙不过来就省了。")],
+         "一节课能干的事，只有讲课。"),
     ]
-    for i, (n, num, t1, t2, desc, tag) in enumerate(cards):
+    gap = 26
+    cw = (R-L-3*gap)//4
+    top = 292
+    chh = 585
+    for i, (n, idx, tag, _, _, rows, small) in enumerate(cards):
         x0 = L + i*(cw+gap)
-        rr(d, [x0+4, top+8, x0+cw+4, top+chh+8], 16, fill=(233, 227, 216))
-        rr(d, [x0, top, x0+cw, top+chh], 16, fill=WHITE, outline=LINE, w=2)
-        ih = 210
-        img_at(cv, find_img(folder, n), (x0+2, top+2, x0+cw-2, top+ih), 14)
-        d.text((x0+26, top+ih+28), num, font=F(30, True), fill=ORD)
-        d.text((x0+26, top+ih+76), t1, font=F(46, True), fill=GREEN)
-        d.text((x0+26, top+ih+134), t2, font=F(46, True), fill=GREEN)
-        para(d, (x0+26, top+ih+206), desc, F(26), DGREY, cw-52, 1.55, 4)
-        d.line([(x0+26, top+chh-66), (x0+cw-26, top+chh-66)], fill=LINE, width=1)
-        d.text((x0+26, top+chh-50), tag, font=F(22), fill=LGREY)
-    by = top + chh + 34
-    rr(d, [L, by, R, by+66], 6, fill=GREEN)
-    t = "我们没想重造一个课堂，只想让真课堂里的三件烦心事少一点。"
-    d.text((L+(R-L-tw(t, F(40, True)))//2, by+12), t, font=F(40, True), fill=WHITE)
+        rr(d, [x0+4, top+8, x0+cw+4, top+chh+8], 14, fill=(233, 227, 216))
+        rr(d, [x0, top, x0+cw, top+chh], 14, fill=WHITE, outline=LINE, w=2)
+        img_at(cv, find_img(folder, n), (x0+2, top+2, x0+cw-2, top+150), 12)
+        # 编号 + 判断词
+        d.text((x0+22, top+172), idx, font=F(30, True), fill=ORD)
+        d.text((x0+58, top+174), tag, font=F(38, True), fill=GREEN)
+        yy = top+234
+        for lab, txt in rows:
+            d.text((x0+22, yy), lab, font=F(19, True), fill=OR)
+            yy = para(d, (x0+22, yy+26), txt, F(23), DGREY, cw-44, 1.42, 3) + 8
+        d.text((x0+22, top+chh-92), small, font=F(20, True), fill=GREEN)
+        d.line([(x0+22, top+chh-40), (x0+cw-22, top+chh-40)], fill=LINE, width=1)
+        d.text((x0+22, top+chh-32), ["→ 第 5 页 新形态", "→ 第 7、8 页 新证据·新分工",
+                                    "→ 第 7 页 新证据", "→ 第 8 页 新分工"][i],
+               font=F(19), fill=LGREY)
+    by = top + chh + 26
+    rr(d, [L, by, R, by+70], 6, fill=GREEN)
+    t = "这四件事，就是我们做小邮的全部理由。"
+    d.text((L+(R-L-tw(t, F(42, True)))//2, by+12), t, font=F(42, True), fill=WHITE)
     return cv
 
-# ---------------------------------------------------------------- P3 四真四新
+# ---------------------------------------------------------------- P3 四真四新（四行对账表）
 def p3(folder="第03页_四真四新"):
     cv = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(cv)
     d.rectangle([0, 0, 26, H], fill=GREEN)
-    d.text((L, 62), "P3 · 四真 · 四新", font=F(30), fill=ORD)
-    pn = "3 / 10"; d.text((R-tw(pn, F(30)), 62), pn, font=F(30), fill=LGREY)
-    d.text((L, 100), "四真 · 四新", font=F(84, True), fill=GREEN)
-    d.text((L+430, 152), "四真回答「真在哪」，四新回答「值在哪」", font=F(34), fill=DGREY)
-    d.line([(L, 236), (R, 236)], fill=GREEN, width=3)
-    cols = [("真课件", "新形态", "原页直读 · 六种样子", "知识长什么样？"),
-            ("真任务", "新场景", "五个业务现场 · 一个真题", "任务在哪发生？"),
-            ("真数据", "新证据", "每个数翻得回底账", "凭什么信你？"),
-            ("真课堂", "新分工", "学生做 · 小邮干 · 老师审", "这些活谁干？")]
-    gap = 30
-    cw = (R-L-3*gap)//4
-    for i, (a, b, s, q) in enumerate(cols):
-        x0 = L + i*(cw+gap)
-        rr(d, [x0, 280, x0+cw, 280+118], 8, fill=GBOX)
-        d.text((x0+40, 280+26), a, font=F(62, True), fill=GREEN)
-        d.line([(x0+cw//2, 398), (x0+cw//2, 424)], fill=ORD, width=3)
-        d.ellipse([x0+cw//2-7, 410, x0+cw//2+7, 424], fill=OR)
-        rr(d, [x0, 430, x0+cw, 430+186], 8, fill=OR)
-        d.text((x0+40, 430+26), b, font=F(62, True), fill=WHITE)
-        d.text((x0+40, 430+128), s, font=F(31), fill=(255, 240, 232))
-        rr(d, [x0, 640, x0+cw, 640+92], 8, fill=WHITE, outline=LINE, w=2)
-        d.text((x0+40, 660), q, font=F(34, True), fill=GREEN)
-    rr(d, [L, 772, R, 772+88], 6, fill=GREEN)
-    a = "四真证明它不是编的。"; b = "四新证明它值得看。"
-    wa, wb = tw(a, F(44, True)), tw(b, F(44, True))
-    sx = L + (R-L-(wa+wb+70))//2
-    d.text((sx, 794), a, font=F(44, True), fill=WHITE)
-    d.text((sx+wa+70, 794), b, font=F(44, True), fill=WHITE)
-    footer(d, "这一页不是拿来念的，是拿来给评委对表的——后面六页，每一页都挂在这四根柱子上。", 900)
+    d.text((L, 56), "P3 · 四真 · 四新", font=F(30), fill=ORD)
+    pn = "3 / 10"; d.text((R-tw(pn, F(30)), 56), pn, font=F(30), fill=LGREY)
+    d.text((L, 100), "四真 · 四新", font=F(62, True), fill=GREEN)
+    d.text((L+392, 128), "四真是现场（不是我编的）　四新是改法（换了怎么干）", font=F(29), fill=DGREY)
+    d.line([(L, 200), (R, 200)], fill=GREEN, width=3)
+
+    cols = [192, 392, 148, 452, 386, 118]
+    xs = [L]
+    for c in cols: xs.append(xs[-1]+c)
+    head = ["四真", "现场摆着什么（数字）", "配哪一新", "这一新，新在哪", "能当场拿出来的东西", "页码"]
+    top = 214
+    hh = 62
+    d.rectangle([L, top, R, top+hh], fill=GREEN)
+    for i, h in enumerate(head):
+        d.text((xs[i]+22, top+16), h, font=F(25, True), fill=WHITE)
+
+    rows = [
+        ("真课件", "154 页互动课件；学生自己写的记录册",
+         "新形态", "知识长什么样？\n课件能点、能藏、能判，还能被问、被念（6 种）",
+         "6 张现场截屏；651 篇政策库", "P5"),
+        ("真任务", "驿站桌上 5 件实物；九站任务图；企业真题",
+         "新场景", "任务在哪发生？\n从纸上搬到 5 个现场：驿站、展厅、车间、手势、九站",
+         "驻企 42 天；3 名学生打标，企业验收", "P6"),
+        ("真数据", "13 堂课、115 人、1,093 条记分明细",
+         "新证据", "凭什么信你？\n每一分都带秒，翻得回是哪次课、哪个人",
+         "柱图、明细表、67 本册子、两轮体检", "P7"),
+        ("真课堂", "42 次抽人、82 次改分、9 站判过关",
+         "新分工", "这些活谁干？\n学生做、小邮干、老师审——六张工牌，各有边界",
+         "六个数字，每个都能翻回那一条", "P8"),
+    ]
+    rh = 168
+    for r, (a, b, c, dnew, e, pg) in enumerate(rows):
+        ty = top + hh + 6 + r*(rh+10)
+        bg = WHITE if r % 2 == 0 else (250, 248, 243)
+        d.rectangle([L, ty, R, ty+rh], fill=bg)
+        d.line([(L, ty+rh), (R, ty+rh)], fill=LINE, width=2)
+        d.text((xs[0]+22, ty+56), a, font=F(40, True), fill=GREEN)
+        para(d, (xs[1]+22, ty+40), b, F(24), DGREY, cols[1]-44, 1.45, 3)
+        d.text((xs[2]+22, ty+56), c, font=F(38, True), fill=OR)
+        lines = dnew.split("\n")
+        d.text((xs[3]+22, ty+30), lines[0], font=F(26, True), fill=GREEN)
+        para(d, (xs[3]+22, ty+70), lines[1], F(24), DGREY, cols[3]-44, 1.45, 3)
+        para(d, (xs[4]+22, ty+48), e, F(22), (96, 104, 114), cols[4]-44, 1.5, 3)
+        d.text((xs[5]+34, ty+60), pg, font=F(30, True), fill=LGREY)
+        # 竖向分隔
+        for x in xs[1:-1]:
+            d.line([(x, ty+14), (x, ty+rh-14)], fill=(238, 232, 222), width=1)
+    d.line([(L, top+hh+6+4*(rh+10)-10), (R, top+hh+6+4*(rh+10)-10)], fill=GREEN, width=3)
+
+    fy = top+hh+6+4*(rh+10)+14
+    d.text((L, fy), "一行一条链：现场是我拍的　→　新在哪儿一句话说得清　→　东西当场能拿出来　→　在后面那页。",
+           font=F(27, True), fill=GREEN)
     return cv
 
 # ---------------------------------------------------------------- P4 一堂课怎么走
